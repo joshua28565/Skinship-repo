@@ -10,7 +10,7 @@ trait ImageUploadingTrait
     {
         $path = storage_path('tmp/uploads');
 
-    
+
         if (!file_exists($path)) {
             mkdir($path, 0755, true);
         }
@@ -22,7 +22,7 @@ trait ImageUploadingTrait
         $file->move($path, $name);
 
         return response()->json([
-            'name'          => $name,
+            'name' => $name,
             'original_name' => $file->getClientOriginalName(),
         ]);
     }

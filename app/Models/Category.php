@@ -10,7 +10,7 @@ use Spatie\MediaLibrary\InteractsWithMedia;
 
 class Category extends Model implements HasMedia
 {
-    use HasFactory,Sluggable,InteractsWithMedia;
+    use HasFactory, Sluggable, InteractsWithMedia;
 
     protected $guarded = ['id', 'created_at', 'updated_at'];
 
@@ -18,8 +18,6 @@ class Category extends Model implements HasMedia
         'photo',
     ];
 
-
-    
     /**
      * Return the sluggable configuration array for this model.
      *
@@ -35,11 +33,13 @@ class Category extends Model implements HasMedia
         ];
     }
 
-    public function parent(){
+    public function parent()
+    {
         return $this->belongsTo(Category::class, 'category_id');
     }
 
-    public function children(){
+    public function children()
+    {
         return $this->hasMany(Category::class);
     }
 
@@ -48,7 +48,25 @@ class Category extends Model implements HasMedia
         return $this->getMedia('photo')->first();
     }
 
-    public function products(){
+    public function products()
+    {
         return $this->hasMany(Product::class);
+    }
+
+    public function getGalleryImagesAttribute()
+    {
+        $galleryImages = [];
+
+        // Fetch all products related to this category
+        $products = $this->products()->with('gallery')->get();
+
+        foreach ($products as $product) {
+            foreach ($product->gallery as $image) {
+                // Assuming 'original_url' contains the URL of the image
+                $galleryImages[] = $image->original_url;
+            }
+        }
+
+        return $galleryImages;
     }
 }

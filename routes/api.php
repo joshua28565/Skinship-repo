@@ -3,10 +3,6 @@
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
-
-
-
-
 /*
 |--------------------------------------------------------------------------
 | API Routes
@@ -23,10 +19,13 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 });
 
 
- Route::middleware('sessions')->group(function () {
-     Route::get('products', [\App\Http\Controllers\HomeController::class, 'getProducts']);
-     Route::post('carts', [\App\Http\Controllers\CartController::class, 'store']);
+Route::middleware('sessions')->group(function () {
+    Route::get('products', [\App\Http\Controllers\HomeController::class, 'getProducts']);
+    Route::post('carts', [\App\Http\Controllers\CartController::class, 'store']);
     Route::get('carts', [\App\Http\Controllers\CartController::class, 'show']);
     Route::get('api/users', [\App\Http\Controllers\UserController::class, 'index']);
 
+    Route::post('register', [\App\Http\Controllers\UserController::class, 'register']);
+    Route::post('login', [\App\Http\Controllers\UserController::class, 'loginApi']);
+    Route::post('logout', [\App\Http\Controllers\UserController::class, 'logoutApi']);
 });
